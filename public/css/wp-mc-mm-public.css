@@ -612,4 +612,9 @@
 	.header-content .nav-container .search-form-container.active {
 		display: flex;
 	}
+
+	.header-container.header-search-active .nav-container .close-submenu,
+	.header-container.header-background-active .nav-container .close-submenu {
+		display: none;
+	}
 }
