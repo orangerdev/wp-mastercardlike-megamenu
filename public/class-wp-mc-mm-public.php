@@ -61,17 +61,6 @@ class Wp_Mc_Mm_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Mc_Mm_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Mc_Mm_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-mc-mm-public.css', array(), $this->version, 'all' );
 
@@ -84,20 +73,36 @@ class Wp_Mc_Mm_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Mc_Mm_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Mc_Mm_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-mc-mm-public.js', array( 'jquery' ), $this->version, true );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-mc-mm-public.js', array( 'jquery' ), $this->version, false );
+	}
 
+	/**
+	 * Register the shortcode for the plugin.
+	 * Hooks into the 'init' action. Priority 10.
+	 */
+
+	public function register_shortcode() {
+		add_shortcode( 'wp_mc_mm', array( $this, 'render_shortcode' ) );
+	}
+
+	/**
+	 * Render the shortcode.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string Rendered shortcode output.
+	 */
+	public function render_shortcode( $atts ) {
+		// Extract shortcode attributes
+		$atts = shortcode_atts( array(
+			'title' => '',
+			'content' => '',
+		), $atts, 'wp_mc_mm' );
+
+		// Output the shortcode content
+		ob_start();
+		require_once plugin_dir_path( __FILE__ ) . 'partials/wp-mc-mm-public-display.php';
+		return ob_get_clean();
 	}
 
 }
